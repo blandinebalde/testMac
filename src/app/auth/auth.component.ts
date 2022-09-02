@@ -1,0 +1,36 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+
+@Component({
+  selector: 'app-auth',
+  templateUrl: './auth.component.html',
+  styleUrls: ['./auth.component.scss']
+})
+export class AuthComponent implements OnInit {
+
+  authStatus!: boolean | boolean;
+
+  constructor(private authService : AuthService, private router : Router ) { }
+
+  ngOnInit(): void {
+    this.authStatus = this.authService.isauth;
+  }
+
+  onSignIn(){
+    this.authService.signIn().then(
+      ()=>{
+        this.authStatus = this.authService.isauth;
+        this.router.navigate(
+          ['appareils']
+        ) 
+      }
+    );
+  } 
+
+  onSignOut(){
+    this.authService.signOut();
+    this.authStatus = this.authService.isauth;
+  } 
+
+}
